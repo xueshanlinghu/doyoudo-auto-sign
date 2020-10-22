@@ -33,8 +33,8 @@ jobs:
     # 安装PM2来后台运行站点
     - name: 'install pm2'
       run: npm install pm2 -g
-    # 运行node服务器
-    - name: 'run node server'
+    # 启动运行PM2服务
+    - name: 'run node server, using PM2'
       run: pm2 start ./js_encrypt_server/aes-server.js
     # 配置安装python环境
     - name: 'Set up Python'
@@ -44,6 +44,9 @@ jobs:
     # 配置安装依赖包
     - name: 'Install requirements'
       run: pip install -r requirements.txt
-    # # 运行python脚本文件，其中的参数取secrets中配置的加密参数，账户名和密码
-    # - name: 'Working'
-    #   run: python doyoudo_auto_sign.py ${{ secrets.USERNAME }} ${{ secrets.PASSWORD }}
+    # 运行python脚本文件，其中的参数取secrets中配置的加密参数，账户名和密码
+    - name: 'Working'
+      run: python doyoudo_auto_sign.py ${{ secrets.USERNAME }} ${{ secrets.PASSWORD }}
+    # 停止PM2服务
+    - name: 'Stop PM2 service'
+      run: pm2 stop all
