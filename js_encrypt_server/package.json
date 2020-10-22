@@ -1,0 +1,19 @@
+{
+  "name": "aes-server",
+  "version": "1.0.0",
+  "description": "use express to get encrypted-text by AES.",
+  "main": "aes-server.js",
+  "scripts": {
+    "test": "node aes-server.js",
+	"start": "node aes-server.js"
+  },
+  "keywords": [
+    "aes"
+  ],
+  "author": "xueshanlinghu",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.17.1",
+    "crypto-js": "4.0.0"
+  }
+}
