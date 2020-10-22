@@ -30,10 +30,12 @@ jobs:
       uses: actions/setup-node@v1.4.4
       with:
         node-version: '12.x'
+    # 安装PM2来后台运行站点
+    - name: 'install pm2'
+      run: npm install pm2 -g
+    # 运行node服务器
     - name: 'run node server'
-      run: |
-        cd ./js_encrypt_server
-        npm start
+      run: pm2 start ./js_encrypt_server/aes-server.js
     # 配置安装python环境
     - name: 'Set up Python'
       uses: actions/setup-python@v2
