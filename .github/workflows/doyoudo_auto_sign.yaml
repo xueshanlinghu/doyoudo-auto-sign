@@ -29,11 +29,11 @@ jobs:
     - name: 'Set up nodejs'
       uses: actions/setup-node@v1.4.4
       with:
-        node-version: '10.x'
+        node-version: '12.x'
     - name: 'run node server'
       run: |
-        'cd ./js_encrypt_server'
-        'npm start'
+        cd ./js_encrypt_server
+        npm start
     # 配置安装python环境
     - name: 'Set up Python'
       uses: actions/setup-python@v2
