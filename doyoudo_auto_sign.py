@@ -108,6 +108,7 @@ def auto_sign(token, dyd_token):
     if res.status_code == 200:
         res.encoding = 'utf-8'
         content = res.json()
+        print(content)
         print(content.get("message", "获取不到信息！请联系作者检查！"))  
     else:
         print(res.text)
