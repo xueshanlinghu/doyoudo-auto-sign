@@ -108,8 +108,16 @@ def auto_sign(token, dyd_token):
     if res.status_code == 200:
         res.encoding = 'utf-8'
         content = res.json()
-        print(content)
-        print(content.get("message", "获取不到信息！请联系作者检查！"))  
+        if content.get("errno") == 0:
+            print("签到成功！")
+            results = content.get("results", "{}")
+            constant = results.get("constant", "【获取不到】")
+            reward = results.get("reward", "【获取不到】")
+            score = results.get("score", "【获取不到】")
+            print(f"坚持天数：{constant}，本次签到奖励：{reward}，签到后雪糕数：{score}")
+        else:
+            # print(content)
+            print(content.get("message", "获取不到信息！请联系作者检查！"))  
     else:
         print(res.text)
         print("签到点击失败！")
