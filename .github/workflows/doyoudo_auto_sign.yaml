@@ -10,7 +10,7 @@ on:
       - master
   # 可以设定定时任务执行
   schedule:
-    # UTC1点30定期执行一次，即北京时间9点30
+    # UTC1点30定期执行一次，即北京时间9点30，线上因为排队可能会有时延
     - cron: '30 1 * * *'
 
 jobs:
@@ -50,3 +50,16 @@ jobs:
     # 停止PM2服务
     - name: 'Stop PM2 service'
       run: pm2 stop all
+    # 发送日志邮件
+    - name: send log mail
+      uses: dawidd6/action-send-mail@v2.2.2
+      with:
+        server_address: smtp.qq.com
+        server_port: 465
+        username: ${{ secrets.MAIL_USERNAME }}
+        password: ${{ secrets.MAIL_PASSWORD }}
+        subject: doyoudo签到情况
+        body: file://log.log
+        to: ${{ secrets.MAIL_TO }}
+        from: GitHub Actions
+        content_type: text/plain
