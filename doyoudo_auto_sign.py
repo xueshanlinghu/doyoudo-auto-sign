@@ -1,13 +1,13 @@
 # coding:utf-8
 
 '''
-doyoudo账户自动签到
+doyoudo 账户自动签到
 作者：雪山凌狐
 日期：2020-10-21
 版本号：1.0
 网址：http://www.xueshanlinghu.com
 
-doyoudo账户自动登录，每日签到，发言获取积分！
+doyoudo 账户自动登录，每日签到，发言获取积分！
 '''
 
 import requests
@@ -17,18 +17,18 @@ import json
 import logging
 import datetime
 
-# 登录url
+# 登录 url
 login_url = "https://www.doyoudo.com/api/user/login/"
-# 计算加密值url，比如优先启动加密服务器！
+# 计算加密值 url，比如优先启动加密服务器！
 cal_dyd_token_url = "http://localhost:3002/aes-encrypt"
-# 签到url
+# 签到 url
 sign_url = "https://www.doyoudo.com/api/user/sign/"
-# 发言url
+# 发言 url
 say_url = "https://www.doyoudo.com/api/voice/"
-# 获取个人信息url
+# 获取个人信息 url
 personal_info_url = "https://www.doyoudo.com/api/user/my_info/"
 
-# 默认headers
+# 默认 headers
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3314.0 Safari/537.36 SE 2.X MetaSr 1.0',
     'Content-Type': 'application/json;charset=UTF-8'
@@ -64,12 +64,12 @@ def login():
             return None
 
 def cal_dyd_token(res):
-    """计算dyd-token的值"""
+    """计算 dyd-token 的值"""
     log_print("正在计算加密值...")
     # 获取token
     token = res.get("token", None)
     if token is None:
-        log_print("token获取失败！程序结束！")
+        log_print("token 获取失败！程序结束！")
         return None, None
     else:
         json_body = {
@@ -82,20 +82,20 @@ def cal_dyd_token(res):
             log_print(token, result)
             return token, result
         else:
-            log_print("dyd-token的值计算不返回200有误")
+            log_print("dyd-token 的值计算不返回 200 有误")
             return token, None
 
 def get_after_login_headers():
-    """获取登录成功之后的headers"""
+    """获取登录成功之后的 headers"""
     # 使用copy方法，不会影响原程序集字典变量
     myheaders = headers.copy()
     myheaders['Token'] = token
     return myheaders
 
 def get_after_login_cookies():
-    """获取登录成功之后的cookies""" 
+    """获取登录成功之后的 cookies""" 
     cookies_dict = {"dyd-token": dyd_token}
-    # 字典转换为可识别的cookiejar
+    # 字典转换为可识别的 cookiejar
     cookies = requests.utils.cookiejar_from_dict(cookies_dict)
     return cookies
 
@@ -172,7 +172,7 @@ def get_personal_info():
                 "已购课程数量": results.get("buy_course_count", "")
             }
             personal_info = json.dumps(personal_info, indent=4)
-            # dumps之后，变为str，中文会变成unicode编码，需要先encode变为raw bytes，再decode回来显示
+            # dumps 之后，变为 str，中文会变成 unicode 编码，需要先 encode 变为 raw bytes，再 decode 回来显示
             log_print(personal_info.encode().decode('unicode_escape'))
         else:
             log_print(content)
@@ -181,7 +181,7 @@ def get_personal_info():
         log_print(res.text)
         log_print("访问获取个人信息失败！")
 
-# 在容器里运行时时间为UTC时间，不是北京时间，需要进行调整
+# 在容器里运行时时间为 UTC 时间，不是北京时间，需要进行调整
 def beijing(sec, what):
     beijing_time = datetime.datetime.now() + datetime.timedelta(hours=8)
     return beijing_time.timetuple()
@@ -191,7 +191,7 @@ def log_setting():
     LOG_FILE_NAME = "log.log"
     LOG_PATH = LOG_FILE_NAME
     log_level = logging.INFO
-    # 在容器里运行时时间为UTC时间，不是北京时间，需要进行调整
+    # 在容器里运行时时间为 UTC 时间，不是北京时间，需要进行调整
     logging.Formatter.converter = beijing
     logging.basicConfig(level=log_level,
                         format='[%(asctime)s] - [line:%(lineno)d] - %(levelname)s: %(message)s',
@@ -206,7 +206,7 @@ def log_print(msg, level="info", to_log_file=True, to_console=True):
     """
     日志输出封装功能
     :param msg: 要输出的信息
-    :param level: 日志级别，一般有debug, info, warning, error, critical等
+    :param level: 日志级别，一般有 debug, info, warning, error, critical 等
     :param to_log_file: 是否保存到日志文件中
     :param to_console: 是否在控制台输出
     """
@@ -240,7 +240,7 @@ if __name__ == '__main__':
     if res:
         token, dyd_token = cal_dyd_token(res)
         if dyd_token is None:
-            log_print("计算dyd-token的值失败，程序结束")
+            log_print("计算 dyd-token 的值失败，程序结束")
         else:
             # 检测并自动签到
             auto_sign()
